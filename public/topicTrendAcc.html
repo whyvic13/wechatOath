@@ -1,0 +1,370 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <title>Accumulated Topic Trend Analytics</title>
+        <link rel="stylesheet" media="screen" href="stylesheets/main.css">
+        <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+        <link rel="stylesheet" href="stylesheets/bootstrap.css">
+        <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+        <link rel="stylesheet" href="stylesheets/navbar-fixed-top.css">
+        <link rel="stylesheet" href="stylesheets/custom.css">
+        <link rel="stylesheet" href="stylesheets/bootstrap-editable.css">
+        <link rel="stylesheet" href="stylesheets/jquery.tablesorter.pager.css">
+        <link rel="stylesheet" href="stylesheets/style.css"/>
+        <link rel="stylesheet" href="stylesheets/selectize.bootstrap3.css">
+        <link rel="stylesheet" href="stylesheets/formValidation.min.css">
+        <link rel="stylesheet" href="stylesheets/multi-select.css">
+        <link rel="stylesheet" href="stylesheets/profile.css">
+        <link rel="stylesheet" href="stylesheets/vis.css"/>
+        <link rel="stylesheet" href='stylesheets/langnet.css' type="text/css" />
+
+
+    <script src="javascripts/hello.js" type="text/javascript"></script>
+        <script type='text/javascript' src="javascripts/d3.js"></script>
+        <script type="text/javascript" src="javascripts/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="javascripts/formValidation.min.js"></script>
+        <script type='text/javascript' src="javascripts/jquery.metadata.js"></script>
+        <script type='text/javascript' src="javascripts/d3.csv.js"></script>
+        <script type='text/javascript' src="javascripts/d3.time.js"></script>
+        <script type='text/javascript' src="javascripts/jquery.tablesorter.js"></script>
+        <script type='text/javascript' src="javascripts/bootstrap-editable.min.js"></script>
+        <script type='text/javascript' src="javascripts/selectize.js"></script>
+        <script type='text/javascript' src="javascripts/lastLoader.js"></script>
+        <script type='text/javascript' src="javascripts/jquery.autosize.js"></script>
+        <script type='text/javascript' src="javascripts/jquery.multi-select.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+
+
+
+    <style type="text/css" xmlns="http://www.w3.org/1999/html">
+    body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, figure, form, fieldset, input, p,
+    blockquote, th, td, legend {
+        margin: 0;
+        padding: 0;
+    }
+
+    p {
+        line-height: 1.4em;
+        margin-bottom: 1.0em;
+    }
+    a {
+        color: #821122;
+    }
+    #content {
+        width: 925px;
+        margin: 0 auto;
+    }
+    #filters {
+        font-family: Arial, sans-serif;
+        margin-bottom: 20px;
+    }
+    #filters a {
+        color: #000;
+        font-size: 12px;
+        padding: 5px;
+        background: #e2e2e2;
+        cursor: pointer;
+        margin-right: 3px;
+        margin-bottom: 10px;
+        border-width: 5px;
+
+    }
+    #filters a:last-child {
+        margin-right: 0;
+    }
+    #filters a.AEROSOLS,
+    #filters a.EVAPORATION,
+    #filters a.OSCILLATIONS,
+    #filters a.TORNADOES
+    {
+        background: #895881;
+        color: #fff;
+    }
+    #filters a.TROPICAL_CYCLONES,
+    #filters a.ALTITUDE,
+    #filters a.GRAVITY_WAVE,
+    #filters a.Others{
+        background: #ED7C31;
+        color: #fff;
+    }
+    #filters a.ATMOSPHERIC_TEMPERATURE,
+    #filters a.HEAT_FLUX,
+    #filters a.PRECIPITATION,
+    #filters a.TROPOPAUSE {
+        background: #82A5C0;
+        color: #fff;
+    }
+    #filters a.BRIGHTNESS_TEMPERATURE,
+    #filters a.HUMIDITY,
+    #filters a.RADAR,
+    #filters a.TURBULENCE,
+    #filters a.OCEAN_CIRCULATION,
+    #filters a.TIDES,
+    #filters a.WIND_SHEAR{
+        background: #6E9E75;
+        color: #fff;
+    }
+    #filters a.CLOUDS,
+    #filters a.HURRICANES,
+    #filters a.SEA_SURFACE_TEMPERATURE,
+    #filters a.TYPHOONS {
+        background: #00BBD6;
+        color: #fff;
+    }
+    #filters a.CONDENSATION,
+    #filters a.LIDAR,
+    #filters a.STORM_SURGE,
+    #filters a.VORTICITY {
+        background: #e25f82;
+        color: #fff;
+    }
+    #filters a.CONVECTION,
+    #filters a.LIGHTNING,
+    #filters a.STORMS,
+    #filters a.WATER_VAPOR {
+        background: #be1932;
+        color: #fff;
+    }
+
+    #filters a.EROSION,
+    #filters a.NATURAL_HAZARDS,
+    #filters a.SURFACE_WINDS,
+    #filters a.WIND_PROFILES {
+        background: #8dbdd8;
+        color: #fff;
+    }
+
+
+    #vis {
+        min-height: 550px;
+    }
+    #blurb {
+        height: 60px;
+        border-top: 1px solid #e2e2e2;
+        padding-top: 20px;
+    }
+    path {
+        stroke: #e2e2e2;
+        stroke-width: 0.9;
+        fill: none;
+    }
+    path.current,
+    path.highlight.current {
+        stroke: #000;
+        stroke-width: 1.7;
+    }
+    .AEROSOLS.highlight,
+    .EVAPORATION.highlight,
+    .OSCILLATIONS.highlight,
+    .TORNADOES.highlight {
+        stroke: #895881;
+        stroke-width: 3;
+    }
+    .TROPICAL_CYCLONES.highlight,
+    .ALTITUDE.highlight,
+    .GRAVITY_WAVE.highlight,
+   .Others.highlight {
+        stroke: #ED7C31;
+        stroke-width: 3;
+    }
+    .ATMOSPHERIC_TEMPERATURE.highlight,
+    .HEAT_FLUX.highlight,
+    .PRECIPITATION.highlight,
+    .TROPOPAUSE.highlight {
+        stroke: #82A5C0;
+        stroke-width: 3;
+
+    }
+    .BRIGHTNESS_TEMPERATURE.highlight,
+    .HUMIDITY.highlight,
+    .RADAR.highlight,
+    .OCEAN_CIRCULATION.highlight,
+    .TIDES.highlight,
+    .WIND_SHEAR.highlight,
+    .TURBULENCE.highlight {
+        stroke: #6E9E75;
+        stroke-width: 3;
+    }
+    .CLOUDS.highlight,
+    .HURRICANES.highlight,
+    .SEA_SURFACE_TEMPERATURE.highlight,
+    .TYPHOONS.highlight {
+        stroke: #00BBD6;
+        stroke-width: 3;
+    }
+    .CONDENSATION.highlight,
+    .LIDAR.highlight,
+    .STORM_SURGE.highlight,
+    .VORTICITY.highlight {
+        stroke: #e25f82;
+        stroke-width: 3;
+    }
+    .CONVECTION.highlight,
+    .LIGHTNING.highlight,
+    .STORMS.highlight,
+    .WATER_VAPOR.highlight {
+        stroke: #be1932;
+        stroke-width: 3;
+
+    }
+
+    .EROSION.highlight,
+    .NATURAL_HAZARDS.highlight,
+    .SURFACE_WINDS.highlight,
+    .WIND_PROFILES.highlight {
+        stroke: #8dbdd8;
+        stroke-width: 3;
+    }
+
+    .highlight {
+        stroke-width: 1px;
+    }
+    line {
+        stroke: black;
+    }
+
+    .axis {
+        stroke-width: 0.8;
+        stroke: #000;
+    }
+    .xTicks,
+    .yTicks {
+        stroke-width: 0.6;
+        stroke: #000;
+    }
+    #cite {
+        font-size: 0.8em;
+        text-align: right;
+        margin-top: 10px;
+        padding-bottom: 20px;
+    }
+    #cite a {
+        background: #e2e2e2;
+        text-decoration: none;
+        color: #821122;
+    }
+    </style>
+
+    <svg width="1680" height="100"></svg>
+
+    </head>
+    <body>
+
+		<!-- Header -->
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+				class="icon-bar"></span> <span class="icon-bar"></span> <span
+				class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="/">Home</a>
+          </li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/topicTrend">Topic Trend</a></li>
+              <li><a href="/topicTrendAcc">Accumulated Topic Trend</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+		<div class="container">
+
+
+     <title>Accumulated Topic Trend Analytics</title>
+
+            <div id="main-wrapper">
+                <div id="content">
+                    <h1>Accumulated Topic Trend Analytics</h1>
+                    <div id="filters">
+                        <br>
+                        <br>
+                        <a id="AEROSOLS">AEROSOLS</a>
+                        <a id="ALTITUDE">ALTITUDE</a>
+                        <a id="ATMOSPHERIC_TEMPERATURE">ATMOSPHERIC/TEMPERATURE</a>
+                        <a id="BRIGHTNESS_TEMPERATURE">BRIGHTNESS/TEMPERATURE</a>
+                        <a id="CLOUDS">CLOUDS</a>
+                        <a id="CONDENSATION">CONDENSATION</a>
+                        <a id="CONVECTION">CONVECTION</a>
+                        <a id="EROSION">EROSION</a>
+                        <br>
+                        <br>
+                        <a id="EVAPORATION">EVAPORATION</a>
+                        <a id="GRAVITY_WAVE">GRAVITY/WAVE</a>
+                        <a id="HEAT_FLUX">HEAT/FLUX</a>
+                        <a id="HUMIDITY">HUMIDITY</a>
+                        <a id="HURRICANES">HURRICANES</a>
+                        <a id="LIDAR">LIDAR</a>
+                        <a id="LIGHTNING">LIGHTNING</a>
+                        <a id="NATURAL_HAZARDS">NATURAL/HAZARDS</a>
+                        <a id="OCEAN_CIRCULATION">OCEAN/CIRCULATION</a>
+                        <br>
+                        <br>
+                        <a id="OSCILLATIONS">OSCILLATIONS</a>
+                        <a id="Others">Others</a>
+                        <a id="PRECIPITATION">PRECIPITATION</a>
+                        <a id="RADAR">RADAR</a>
+                        <a id="SEA_SURFACE_TEMPERATURE">SEA/SURFACE/TEMPERATURE</a>
+                        <a id="STORM_SURGE">STORM/SURGE</a>
+                        <a id="STORMS">STORMS</a>
+                        <a id="SURFACE_WINDS">SURFACE/WINDS</a>
+                        <a id="TIDES">TIDES</a>
+                        <br>
+                        <br>
+                        <a id="TORNADOES">TORNADOES</a>
+                        <a id="TROPICAL_CYCLONES">TROPICAL/CYCLONES</a>
+                        <a id="TROPOPAUSE">TROPOPAUSE</a>
+                        <a id="TURBULENCE">TURBULENCE</a>
+                        <a id="TYPHOONS">TYPHOONS</a>
+                        <a id="VORTICITY">VORTICITY</a>
+                        <a id="WATER_VAPOR">WATER/VAPOR</a>
+                        <a id="WIND_PROFILES">WIND/PROFILES</a>
+                        <a id="WIND_SHEAR">WIND/SHEAR</a>
+                    </div>
+                    <div id="blurb">
+                        <div id="default-blurb">
+                            <h2></h2>
+                        </div>
+                        <div id="blurb-content"></div>
+                    </div>
+                    <div id="vis"></div>
+                </div>
+            </div>
+            <script type="text/javascript" src="javascripts/topicacc.js"></script>
+            <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#filters a').click(function() {
+                            var countryId = $(this).attr("id");
+                            $(this).toggleClass(countryId);
+                            showRegion(countryId);
+                        });
+
+                    });
+            </script>
+
+
+
+		</div>
+
+
+    </body>
+</html>
