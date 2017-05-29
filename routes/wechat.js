@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
           console.log(body) // Print the google web page.
        }
   })
-  res.render('/index.html');
+  res.redirect('/index.html');
 });
 
 router.get('/openid', function(req, res, next) {
