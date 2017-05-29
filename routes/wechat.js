@@ -5,7 +5,7 @@ var client = new OAuth('wxf53ebc8656c7b6c2', 'ef3649c7af8eb1edcd3c6a2f56fd52b6')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var url = client.getAuthorizeURL('http://wxgzhpaytest.maxtropy.com/wechat/openid', 'AUTH', 'snsapi_base');
+  var url = client.getAuthorizeURL('http://wxgzhpaytest.maxtropy.com/wechat/openid', 'AUTH', 'snsapi_userinfo');
   res.redirect(url);
 });
 
@@ -15,7 +15,9 @@ router.get('/openid', function(req, res, next) {
   client.getAccessToken(code, function (err, result) {
     var accessToken = result.data.access_token;
     var openid = result.data.openid;
-    res.send(openid);
+    client.getUser(openid, function (err, result) {
+      res.send(result);
+    });
   });
 });
 
