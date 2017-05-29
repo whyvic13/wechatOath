@@ -15,8 +15,8 @@ router.get('/openid', function(req, res, next) {
   client.getAccessToken(code, function (err, result) {
     var accessToken = result.data.access_token;
     var openid = result.data.openid;
+    res.send(openid);
   });
-  res.send(openid);
 });
 
 module.exports = router;
