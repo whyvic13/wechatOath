@@ -13,6 +13,7 @@ router.get('/openid', function(req, res, next) {
   var code = req.param('code');
   console.log(code)
   client.getAccessToken('code', function (err, result) {
+    console.log(result);
     var accessToken = result.data.access_token;
     var openid = result.data.openid;
   });
